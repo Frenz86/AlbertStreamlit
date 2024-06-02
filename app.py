@@ -7,9 +7,6 @@ import torch
 # model_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="sentiment-int8.onnx")
 # tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
-# import joblib
-# tokenizer = joblib.load('tokenizer_sentiment.pkl')
-
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
     tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
