@@ -13,10 +13,9 @@ tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
 
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
-    #tokenizer = joblib.load(tokenizer_path)                 # load tokenizer
     onnx_model_path = model_path                            # load model quantized int8
     ort_session = onnxruntime.InferenceSession(onnx_model_path)
-    return ort_session,tokenizer
+    return ort_session
 
 def analyze_sentimentinference(text, ort_session, tokenizer):
     inputs = tokenizer(text, return_tensors="pt")
@@ -30,7 +29,7 @@ def analyze_sentimentinference(text, ort_session, tokenizer):
 def main():
     st.title("Sentiment Analysis (ALBERT) from HuggingFace 🤗 Repository")
     input_text = st.text_area("Enter text for classification", height=150)
-    ort_session,tokenizer = load_model()
+    ort_session = load_model()
     
     if st.button("Analyze"):
         if input_text:
