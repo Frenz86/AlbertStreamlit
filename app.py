@@ -7,15 +7,14 @@ import streamlit as st
 # model_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="sentiment-int8.onnx")
 # tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
-import joblib
-tokenizer = joblib.load('tokenizer_sentiment.pkl')
-#from transformers import AutoTokenizer
-#tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
+# import joblib
+# tokenizer = joblib.load('tokenizer_sentiment.pkl')
+from transformers import AutoTokenizer
+tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
 
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
-    model_path = "sentiment-int8.onnx"
-    onnx_model_path = model_path                            # load model quantized int8
+    onnx_model_path = "sentiment-int8.onnx"
     ort_session = onnxruntime.InferenceSession(onnx_model_path)
     return ort_session
 
@@ -42,6 +41,7 @@ def main():
             st.balloons()
         else:
             st.write("Please enter text to analyze.")
+
 
 
 if __name__ == "__main__":
