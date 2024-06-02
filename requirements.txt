@@ -3,4 +3,4 @@ onnxruntime
 joblib
 numpy
 streamlit
-transformers
+transformers==4.0.1
