@@ -9,7 +9,9 @@ import streamlit as st
 # tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
 model_path = "sentiment-int8.onnx"
-tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
+import joblib
+tokenizer = joblib.load('tokenizer_sentiment')
+#tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
 
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
