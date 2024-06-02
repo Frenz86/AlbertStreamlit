@@ -8,11 +8,13 @@ import torch
 # tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
 @st.cache_resource  # 👈 Add the caching decorator
-def load_model():
-    tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
-    model = AutoModelForSequenceClassification.from_pretrained("Frenz/modelsent_test")
-    return model, tokenizer
-
+def load_model(force_reload=False):
+    if force_reload or 'model' not in st.session_state:
+        tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
+        model = AutoModelForSequenceClassification.from_pretrained("Frenz/modelsent_test")
+        st.session_state['model'] = model
+        st.session_state['tokenizer'] = tokenizer
+    return st.session_state['model'], st.session_state['tokenizer']
 
 def predict_sentiment(model, tokenizer, text):
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True)
@@ -29,7 +31,18 @@ def predict_sentiment(model, tokenizer, text):
 def main():
     st.title("Sentiment Analysis (ALBERT) from HuggingFace 🤗 Repository")
     input_text = st.text_area("Enter text for classification", height=150)
-    model, tokenizer = load_model()
+    
+    if 'force_reload' not in st.session_state:
+        st.session_state['force_reload'] = False
+    
+    if st.button("Update Model"):
+        st.session_state['force_reload'] = True
+    
+    model, tokenizer = load_model(force_reload=st.session_state['force_reload'])
+    
+    if st.session_state['force_reload']:
+        st.success("Model updated successfully!")
+        st.session_state['force_reload'] = False
     
     if st.button("Analyze"):
         if input_text:
