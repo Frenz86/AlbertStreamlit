@@ -1,6 +1,6 @@
 # huggingface_hub
+transformers==4.40
 onnxruntime
 joblib
 numpy
 streamlit
-transformers==4.0.1
