@@ -3,3 +3,4 @@ onnxruntime
 joblib
 numpy
 streamlit
+transformers
