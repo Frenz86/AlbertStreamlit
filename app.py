@@ -38,7 +38,6 @@ def main():
         if input_text:
             input_texts = input_text.split('\n')
             pred = [predict_sentiment(model, tokenizer, text) for text in input_texts][0]
-
             st.info(pred, icon="📑")
             st.balloons()
         else:
