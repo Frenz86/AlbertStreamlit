@@ -10,6 +10,7 @@ import streamlit as st
 # import joblib
 # tokenizer = joblib.load('tokenizer_sentiment.pkl')
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
@@ -38,8 +39,7 @@ def main():
     if st.button("Analyze"):
         if input_text:
             input_texts = input_text.split('\n')
-            predictions = [predict_sentiment(model, tokenizer, text) for text in input_texts]
-            pred = "\n".join(f"{text}: {prediction}" for text, prediction in zip(input_texts, predictions))
+            pred = [predict_sentiment(model, tokenizer, text) for text in input_texts][0]
 
             st.info(pred, icon="📑")
             st.balloons()
