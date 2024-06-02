@@ -1,4 +1,3 @@
-from huggingface_hub import hf_hub_download
 import onnxruntime
 import joblib
 import numpy as np
@@ -6,8 +5,13 @@ import streamlit as st
 
 #################################################################################################
 
-model_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="sentiment-int8.onnx")
-tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
+
+model_path = "sentiment-int8.onnx"
+tokenizer_path = "tokenizer_sentiment.pkl"
+
+# from huggingface_hub import hf_hub_download
+# model_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="sentiment-int8.onnx")
+# tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
 tokenizer = joblib.load(tokenizer_path)                 # load tokenizer
 onnx_model_path = model_path                            # load model quantized int8
