@@ -10,7 +10,7 @@ import streamlit as st
 
 model_path = "sentiment-int8.onnx"
 import joblib
-tokenizer = joblib.load('tokenizer_sentiment')
+tokenizer = joblib.load('tokenizer_sentiment.pkl')
 #tokenizer = AutoTokenizer.from_pretrained("Frenz/modelsent_test")
 
 @st.cache_resource  # 👈 Add the caching decorator
