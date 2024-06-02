@@ -1,5 +1,5 @@
 # huggingface_hub
-transformers==4.30
+transformers[torch]
 onnxruntime
 joblib
 numpy
