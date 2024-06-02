@@ -4,18 +4,19 @@ import numpy as np
 import streamlit as st
 
 #################################################################################################
-
-
-model_path = "sentiment-int8.onnx"
-tokenizer_path = "tokenizer_sentiment.pkl"
-
 # from huggingface_hub import hf_hub_download
 # model_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="sentiment-int8.onnx")
 # tokenizer_path = hf_hub_download(repo_id="Frenz/modelsent_test", filename="tokenizer_sentiment.pkl")
 
-tokenizer = joblib.load(tokenizer_path)                 # load tokenizer
-onnx_model_path = model_path                            # load model quantized int8
-ort_session = onnxruntime.InferenceSession(onnx_model_path)
+model_path = "sentiment-int8.onnx"
+tokenizer_path = "tokenizer_sentiment.pkl"
+
+@st.cache_resource  # 👈 Add the caching decorator
+def load_model():
+    tokenizer = joblib.load(tokenizer_path)                 # load tokenizer
+    onnx_model_path = model_path                            # load model quantized int8
+    ort_session = onnxruntime.InferenceSession(onnx_model_path)
+    return ort_session,tokenizer
 
 def analyze_sentimentinference(text, ort_session, tokenizer):
     inputs = tokenizer(text, return_tensors="pt")
@@ -27,9 +28,10 @@ def analyze_sentimentinference(text, ort_session, tokenizer):
 
 
 def main():
-
     st.title("Sentiment Analysis (ALBERT) from HuggingFace 🤗 Repository")
     input_text = st.text_area("Enter text for classification", height=150)
+    ort_session,tokenizer = load_model()
+    
     if st.button("Analyze"):
         if input_text:
             input_texts = input_text.split('\n')
