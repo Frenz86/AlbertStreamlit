@@ -1,6 +1,6 @@
-import onnxruntime
-import numpy as np
 import streamlit as st
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
 
 #################################################################################################
 # from huggingface_hub import hf_hub_download
@@ -9,8 +9,6 @@ import streamlit as st
 
 # import joblib
 # tokenizer = joblib.load('tokenizer_sentiment.pkl')
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import torch
 
 @st.cache_resource  # 👈 Add the caching decorator
 def load_model():
